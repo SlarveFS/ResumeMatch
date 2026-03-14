@@ -1,4 +1,8 @@
 import { useState, useRef } from "react";
+import * as pdfjsLib from "pdfjs-dist";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 function InputPanel({
   jobDescription,
@@ -21,20 +25,17 @@ function InputPanel({
     setPdfLoading(true);
     setUploadedFile(file);
     try {
-      const base64 = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result.split(",")[1]);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-      const res = await fetch("/api/extract-pdf", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: base64 }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Extraction failed.");
-      setResume(data.text);
+      const arrayBuffer = await file.arrayBuffer();
+      const doc = await pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) }).promise;
+      let text = "";
+      for (let i = 1; i <= doc.numPages; i++) {
+        const page = await doc.getPage(i);
+        const content = await page.getTextContent();
+        text += content.items.map((item) => item.str).join(" ") + "\n";
+        page.cleanup();
+      }
+      await doc.destroy();
+      setResume(text.trim());
     } catch (err) {
       setUploadedFile(null);
       setResume("");

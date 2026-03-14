@@ -1,16 +1,21 @@
 import Anthropic from "@anthropic-ai/sdk";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).end();
+  res.setHeader("Content-Type", "application/json");
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-  const { jobDescription, resume } = req.body;
-
-  if (!jobDescription || !resume) {
-    return res.status(400).json({ error: "Both fields are required." });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed." });
   }
 
   try {
+    const { jobDescription, resume } = req.body;
+
+    if (!jobDescription || !resume) {
+      return res.status(400).json({ error: "Both fields are required." });
+    }
+
+    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
     const message = await client.messages.create({
       model: "claude-sonnet-4-20250514",
       max_tokens: 1500,
@@ -40,9 +45,9 @@ Be specific and actionable. The suggested bullets should be realistic and based 
 
     const text = message.content[0].text;
     const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-    res.json(JSON.parse(cleaned));
+    return res.status(200).json(JSON.parse(cleaned));
   } catch (err) {
     console.error("API Error:", err);
-    res.status(500).json({ error: "Analysis failed. Please try again." });
+    return res.status(500).json({ error: "Analysis failed. Please try again." });
   }
 }
