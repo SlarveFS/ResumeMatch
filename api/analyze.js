@@ -1,10 +1,9 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const { jobDescription, resume } = req.body;
 
   if (!jobDescription || !resume) {

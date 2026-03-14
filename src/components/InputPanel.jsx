@@ -21,11 +21,16 @@ function InputPanel({
     setPdfLoading(true);
     setUploadedFile(file);
     try {
-      const formData = new FormData();
-      formData.append("resume", file);
+      const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result.split(",")[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
       const res = await fetch("/api/extract-pdf", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: base64 }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Extraction failed.");

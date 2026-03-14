@@ -1,5 +1,9 @@
 {
   "buildCommand": "vite build",
   "outputDirectory": "dist",
-  "framework": "vite"
+  "functions": {
+    "api/analyze.js": { "maxDuration": 30 },
+    "api/extract-pdf.js": { "maxDuration": 15 },
+    "api/extract-url.js": { "maxDuration": 15 }
+  }
 }
