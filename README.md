@@ -2,7 +2,7 @@
 
 **AI-powered resume analysis that finds the gaps and helps you get the interview.**
 
-![ResumeMatch Screenshot](./screenshot.png)
+![ResumeMatch Screenshot](./resume.screenshot.png)
 
 🔗 **Live App:** [resume-match-gilt.vercel.app](https://resume-match-gilt.vercel.app)
 
