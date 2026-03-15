@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(/usr/local/bin/npm install:*)",
+      "Bash(/usr/local/bin/node --version)",
+      "Read(//usr/local/bin/**)",
+      "Bash(export PATH=\"/usr/local/bin:$PATH\")",
+      "Bash(/usr/local/bin/node /usr/local/bin/npm install react-router-dom)",
+      "Bash(env PATH=\"/usr/local/bin:/usr/bin:/bin\" /usr/local/bin/node /usr/local/bin/npm install react-router-dom)",
+      "Bash(env PATH=\"/usr/local/bin:/usr/bin:/bin\" /usr/local/bin/node -e \"const pkg = require\\(''/Users/slarven./Desktop/resumematch/node_modules/react-router-dom/package.json''\\); console.log\\(pkg.version\\);\")",
+      "Bash(env PATH=\"/usr/local/bin:/usr/bin:/bin\" /usr/local/bin/node -e \":*)",
+      "Bash(env PATH=\"/usr/local/bin:/usr/bin:/bin\" /usr/local/bin/node -e \"const p = require\\(''/Users/slarven./Desktop/resumematch/package.json''\\); console.log\\(''react-router-dom:'', p.dependencies[''react-router-dom''] || p.devDependencies?.[''react-router-dom''] || ''NOT FOUND''\\);\")",
+      "Bash(npm run:*)",
+      "Bash(/usr/local/bin/npm run:*)",
+      "Bash(~/.nvm/versions/node/v22.22.0/bin/npm run:*)",
+      "Bash(~/.nvm/versions/node/v22.22.0/bin/node --version)",
+      "Bash(~/.nvm/versions/node/v22.22.0/bin/npm --version)",
+      "Bash(~/.nvm/versions/node/v22.22.0/bin/node ~/.nvm/versions/node/v22.22.0/bin/npm run build)"
+    ]
+  }
+}

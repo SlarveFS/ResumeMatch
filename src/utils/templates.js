@@ -1,0 +1,72 @@
+export const TEMPLATES = [
+  {
+    id: 'classic',
+    name: 'Classic',
+    description: 'Traditional single-column, clean and conservative',
+    bestFor: ['Corporate', 'Finance', 'Legal'],
+    accent: '#2E5A88',
+  },
+  {
+    id: 'modern',
+    name: 'Modern',
+    description: 'Two-column layout with sidebar for skills & contact',
+    bestFor: ['Tech', 'Design', 'Marketing'],
+    accent: '#4A90D9',
+  },
+  {
+    id: 'minimal',
+    name: 'Minimal',
+    description: 'Elegant typography with lots of white space',
+    bestFor: ['Creative', 'Executive'],
+    accent: '#555555',
+  },
+  {
+    id: 'bold',
+    name: 'Bold',
+    description: 'Strong section headers with accent color bars',
+    bestFor: ['Sales', 'Management'],
+    accent: '#E63946',
+  },
+  {
+    id: 'tech',
+    name: 'Tech',
+    description: 'Code-inspired with monospace headers and skill bars',
+    bestFor: ['Developers', 'Engineers'],
+    accent: '#2D9CDB',
+  },
+  {
+    id: 'creative',
+    name: 'Creative',
+    description: 'Unique layout with color accents and icons',
+    bestFor: ['Designers', 'Artists'],
+    accent: '#9B59B6',
+  },
+];
+
+export const DEFAULT_RESUME_DATA = {
+  selectedTemplate: 'classic',
+  personalInfo: {
+    fullName: '',
+    email: '',
+    phone: '',
+    location: '',
+    linkedin: '',
+    github: '',
+    website: '',
+  },
+  summary: '',
+  experience: [],
+  education: [],
+  skills: {
+    technical: [],
+    soft: [],
+    tools: [],
+    languages: [],
+    certifications: [],
+  },
+  projects: [],
+  certifications: [],
+  customSections: [],
+  sectionOrder: ['summary', 'experience', 'education', 'skills', 'projects', 'certifications'],
+  hiddenSections: [],
+};

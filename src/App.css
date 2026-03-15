@@ -772,3 +772,25 @@ body {
     font-size: 0.78rem;
   }
 }
+
+/* ── Page Header ── */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2B2B2B;
+  margin-bottom: 0.4rem;
+}
+
+.page-subtitle {
+  color: #78716C;
+  font-size: 1rem;
+}
+
+/* ── Footer adjustment for routing ── */
+.footer {
+  flex-shrink: 0;
+}

@@ -1,0 +1,132 @@
+.navbar {
+  background: #fff;
+  border-bottom: 1px solid #E8E4DF;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+}
+
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navbar-logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2E5A88;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.navbar-logo-icon {
+  font-size: 1.1rem;
+}
+
+.navbar-links {
+  display: flex;
+  list-style: none;
+  gap: 0.25rem;
+  margin-left: auto;
+  align-items: center;
+  padding: 0;
+}
+
+.navbar-link {
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #57534E;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.navbar-link:hover:not(.disabled) {
+  background: #F0EDE8;
+  color: #2B2B2B;
+}
+
+.navbar-link.active {
+  background: rgba(46, 90, 136, 0.1);
+  color: #2E5A88;
+  font-weight: 600;
+}
+
+.navbar-link.disabled {
+  color: #C7C2BC;
+  cursor: default;
+}
+
+.coming-soon-badge {
+  background: #F0EDE8;
+  color: #A8A29E;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+}
+
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: auto;
+}
+
+.navbar-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #2B2B2B;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+@media (max-width: 640px) {
+  .navbar-hamburger {
+    display: flex;
+  }
+
+  .navbar-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    flex-direction: column;
+    padding: 0.75rem 1rem 1rem;
+    border-bottom: 1px solid #E8E4DF;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    gap: 0.25rem;
+    align-items: stretch;
+    margin-left: 0;
+  }
+
+  .navbar-links.open {
+    display: flex;
+  }
+
+  .navbar-link {
+    padding: 0.65rem 1rem;
+  }
+}

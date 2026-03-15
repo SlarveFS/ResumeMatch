@@ -1,0 +1,652 @@
+/* ── Preview Container ─────────────────────────────────────────── */
+.preview-container {
+  background: #D6D1CB;
+  flex: 1;
+  padding: 2rem 1.5rem 3rem;
+}
+
+/* ── Resume Paper (shared base) ────────────────────────────────── */
+.resume-paper {
+  background: #fff;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 48px 52px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 4px 12px rgba(0, 0, 0, 0.10),
+    0 16px 40px rgba(0, 0, 0, 0.10),
+    0 32px 64px rgba(0, 0, 0, 0.07);
+  font-size: 11px;
+  line-height: 1.55;
+  color: #1a1a1a;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  min-height: 900px;
+  position: relative;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+/* ── Shared: Header ─────────────────────────────────────────────── */
+.rp-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #2E5A88;
+  text-align: center;
+}
+
+.rp-name {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+  line-height: 1.2;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/* ── Contact line ───────────────────────────────────────────────── */
+.rp-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 9.5px;
+  color: #4A4A4A;
+  font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1.6;
+  gap: 0;
+}
+
+.rp-contact-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.rp-contact-sep {
+  color: #999;
+  font-weight: 300;
+}
+
+/* ── Shared: Section ────────────────────────────────────────────── */
+.rp-section {
+  margin-bottom: 16px;
+}
+
+.rp-section-title {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: #2E5A88;
+  border-bottom: 1.5px solid #2E5A88;
+  padding-bottom: 3px;
+  margin-bottom: 10px;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/* ── Shared: Entries ────────────────────────────────────────────── */
+.rp-entry {
+  margin-bottom: 11px;
+}
+
+.rp-entry:last-child {
+  margin-bottom: 0;
+}
+
+.rp-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 3px;
+  gap: 8px;
+}
+
+.rp-entry-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.rp-entry-title {
+  font-weight: 700;
+  color: #111;
+  font-size: 11px;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.rp-entry-company { color: #333; font-style: italic; }
+.rp-entry-location { color: #555; }
+.rp-entry-gpa { color: #555; }
+
+.rp-entry-date {
+  font-size: 9.5px;
+  color: #555;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.rp-entry-link {
+  color: #2E5A88;
+  font-size: 9.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Shared: Content blocks ─────────────────────────────────────── */
+.rp-summary {
+  color: #333;
+  font-size: 10.5px;
+  line-height: 1.65;
+}
+
+.rp-bullets {
+  margin: 4px 0 0 16px;
+  padding: 0;
+  list-style: disc;
+}
+
+.rp-bullets li {
+  font-size: 10.5px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 2px;
+  padding-left: 2px;
+}
+
+.rp-honors {
+  font-size: 10px;
+  color: #444;
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.rp-coursework {
+  font-size: 10px;
+  color: #555;
+  margin-top: 2px;
+}
+
+.rp-skills { display: flex; flex-direction: column; gap: 5px; }
+
+.rp-skill-group {
+  font-size: 10.5px;
+  color: #333;
+  line-height: 1.55;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.rp-skill-group strong {
+  color: #111;
+  font-weight: 600;
+}
+
+.rp-proj-tech {
+  font-size: 9.5px;
+  color: #2E5A88;
+  font-style: italic;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.rp-proj-desc {
+  font-size: 10.5px;
+  color: #333;
+  margin-top: 2px;
+}
+
+/* ── Empty State ─────────────────────────────────────────────────── */
+.rp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 440px;
+  text-align: center;
+  color: #9CA3AF;
+}
+
+.rp-empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.35; }
+
+.rp-empty p {
+  font-size: 13px;
+  font-family: 'Inter', -apple-system, sans-serif;
+  max-width: 260px;
+  line-height: 1.65;
+}
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TEMPLATE 1 — CLASSIC (default, already styled above)
+   Traditional · Georgia serif · Centered header · Navy underlines
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Nothing extra — base styles ARE the Classic template */
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TEMPLATE 2 — MODERN
+   Two-column: dark navy sidebar | white main column
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.template-modern {
+  padding: 0;
+  font-family: 'Inter', -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+/* Two-column flex wrapper */
+.rp-modern-wrap {
+  display: flex;
+  min-height: 900px;
+}
+
+/* Sidebar */
+.rp-sidebar {
+  width: 210px;
+  flex-shrink: 0;
+  background: #1E3A5F;
+  color: #fff;
+  padding: 36px 18px 36px 22px;
+}
+
+.rp-sidebar-name-block {
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.rp-sidebar-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  word-break: break-word;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.rp-sidebar-section {
+  margin-bottom: 18px;
+}
+
+.rp-sidebar-title {
+  font-size: 7.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.rp-sidebar-contact-item {
+  font-size: 9px;
+  color: rgba(255,255,255,0.80);
+  margin-bottom: 5px;
+  word-break: break-all;
+  line-height: 1.45;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.rp-sidebar-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.rp-sidebar-skill {
+  display: inline-block;
+  font-size: 8px;
+  background: rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.88);
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1.6;
+}
+
+/* Main column */
+.rp-main {
+  flex: 1;
+  min-width: 0;
+  padding: 36px 28px 36px 22px;
+}
+
+.template-modern .rp-section-title {
+  color: #4A90D9;
+  border-bottom-color: #4A90D9;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.template-modern .rp-entry-title {
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.template-modern .rp-proj-tech { color: #4A90D9; }
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TEMPLATE 3 — MINIMAL
+   Extreme whitespace · Light gray dividers · Elegant light typography
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.template-minimal {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  padding: 56px 60px;
+}
+
+.template-minimal .rp-header {
+  border-bottom: 1px solid #D8D5D2;
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+.template-minimal .rp-name {
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  margin-bottom: 8px;
+}
+
+.template-minimal .rp-contact {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #888;
+  justify-content: flex-start;
+  font-family: 'Georgia', serif;
+}
+
+.template-minimal .rp-section {
+  margin-bottom: 22px;
+}
+
+.template-minimal .rp-section-title {
+  color: #AAAAAA;
+  border-bottom: 1px solid #E8E5E2;
+  font-weight: 400;
+  letter-spacing: 3px;
+  font-size: 8px;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  margin-bottom: 14px;
+  font-family: 'Georgia', serif;
+}
+
+.template-minimal .rp-entry {
+  margin-bottom: 14px;
+}
+
+.template-minimal .rp-entry-title {
+  font-weight: 600;
+  font-size: 11.5px;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+}
+
+.template-minimal .rp-entry-company {
+  font-style: normal;
+  color: #444;
+}
+
+.template-minimal .rp-entry-date {
+  color: #888;
+  font-family: 'Georgia', serif;
+}
+
+.template-minimal .rp-summary {
+  color: #444;
+  font-size: 10.5px;
+  line-height: 1.75;
+}
+
+.template-minimal .rp-bullets li {
+  line-height: 1.7;
+  color: #444;
+}
+
+.template-minimal .rp-skill-group { color: #444; }
+.template-minimal .rp-proj-tech { color: #888; }
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TEMPLATE 4 — BOLD
+   Heavy name · Filled red section headers · Strong hierarchy
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.template-bold {
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.template-bold .rp-header {
+  border-bottom: 3px solid #C0392B;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.template-bold .rp-name {
+  font-size: 30px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.5px;
+  font-family: 'Inter', -apple-system, sans-serif;
+  text-transform: none;
+}
+
+.template-bold .rp-contact {
+  justify-content: flex-start;
+  margin-top: 4px;
+}
+
+.template-bold .rp-section { margin-bottom: 14px; }
+
+.template-bold .rp-section-title {
+  background: #C0392B;
+  color: #fff;
+  border: none;
+  padding: 3px 10px 3px 8px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+  letter-spacing: 0.6px;
+  font-size: 8.5px;
+  display: block;
+}
+
+.template-bold .rp-entry-title {
+  font-weight: 700;
+  font-size: 11.5px;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.rp-bold-company {
+  color: #C0392B;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.template-bold .rp-summary { line-height: 1.6; }
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TEMPLATE 5 — TECH
+   Code-inspired · Monospace everywhere · Skills first · `// sections`
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.template-tech {
+  font-family: 'Courier New', Courier, monospace;
+  background: #FAFAFA;
+}
+
+.rp-tech-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2D9CDB;
+}
+
+.rp-tech-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.rp-tech-prompt {
+  color: #2D9CDB;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.template-tech .rp-name {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 0;
+  margin-bottom: 0;
+}
+
+.rp-tech-contact {
+  justify-content: flex-start;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 9px;
+  color: #666;
+}
+
+.template-tech .rp-section { margin-bottom: 14px; }
+
+.template-tech .rp-section-title {
+  color: #2D9CDB;
+  border-bottom: none;
+  border-left: 3px solid #2D9CDB;
+  padding: 0 0 0 8px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  text-transform: none;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.template-tech .rp-entry-title {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+}
+
+.template-tech .rp-entry-company {
+  font-style: normal;
+  color: #555;
+}
+
+.template-tech .rp-entry-date {
+  font-family: 'Courier New', Courier, monospace;
+  color: #888;
+}
+
+.template-tech .rp-summary {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+  line-height: 1.65;
+  color: #333;
+}
+
+.template-tech .rp-bullets li {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+  color: #333;
+}
+
+.template-tech .rp-skill-group {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+}
+
+.template-tech .rp-skill-group strong { color: #2D9CDB; }
+
+.template-tech .rp-proj-tech {
+  color: #2D9CDB;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.template-tech .rp-entry-link {
+  color: #2D9CDB;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TEMPLATE 6 — CREATIVE
+   Full-bleed purple gradient header · Skill chips · Personality
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.template-creative {
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.rp-creative-header {
+  background: linear-gradient(135deg, #9B59B6 0%, #6C3483 100%);
+  margin: -48px -52px 20px;
+  padding: 36px 52px 28px;
+}
+
+.template-creative .rp-name {
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  font-family: 'Inter', -apple-system, sans-serif;
+  margin-bottom: 6px;
+}
+
+.rp-creative-contact {
+  justify-content: flex-start;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.rp-creative-sep {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.template-creative .rp-section { margin-bottom: 14px; }
+
+.template-creative .rp-section-title {
+  color: #8E44AD;
+  border-bottom-color: #CE93D8;
+  border-bottom-width: 1px;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.template-creative .rp-entry-title {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-weight: 700;
+}
+
+.template-creative .rp-entry-company { color: #555; }
+
+.template-creative .rp-proj-tech { color: #8E44AD; }
+
+/* Creative skill chips */
+.rp-creative-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.rp-creative-skill-chip {
+  display: inline-block;
+  font-size: 9px;
+  padding: 2px 9px;
+  border-radius: 12px;
+  border: 1px solid #CE93D8;
+  color: #7B1FA2;
+  font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1.7;
+  background: #FAF0FE;
+}
