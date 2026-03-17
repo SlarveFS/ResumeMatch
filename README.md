@@ -12,6 +12,18 @@ Most resume builders charge $25–50/month for AI features, lock PDF downloads b
 
 -----
 
+## Screenshots
+
+![Step-by-Step Wizard](screenshots/wizard.png)
+*Guided wizard with gamified resume score and recruiter tips*
+
+![Template Selector](screenshots/templates.png)
+*15 professional templates with realistic previews and category filters*
+
+![AI Features](screenshots/home.png)
+*Home Screen*
+
+
 ## Features
 
 ### Step-by-Step Resume Wizard
