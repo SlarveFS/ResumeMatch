@@ -4,6 +4,7 @@ import Landing from './pages/Landing';
 import Analyze from './pages/Analyze';
 import Builder from './pages/Builder';
 import Editor from './pages/Editor';
+import WizardBuilder from './pages/WizardBuilder';
 import CoverLetter from './pages/CoverLetter';
 import Dashboard from './pages/Dashboard';
 import './App.css';
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/analyze" element={<Analyze />} />
           <Route path="/builder" element={<Builder />} />
+          <Route path="/builder/wizard" element={<WizardBuilder />} />
           <Route path="/builder/edit" element={<Editor />} />
           <Route path="/cover-letter" element={<CoverLetter />} />
           <Route path="/dashboard" element={<Dashboard />} />

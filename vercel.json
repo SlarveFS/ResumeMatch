@@ -5,6 +5,10 @@
     "api/analyze.js": { "maxDuration": 30 },
     "api/extract-pdf.js": { "maxDuration": 15 },
     "api/extract-url.js": { "maxDuration": 15 },
-    "api/extract-resume-data.js": { "maxDuration": 30 }
+    "api/extract-resume-data.js": { "maxDuration": 30 },
+    "api/suggest-content.js": { "maxDuration": 30 },
+    "api/improve-content.js": { "maxDuration": 30 },
+    "api/generate-cover-letter.js": { "maxDuration": 30 },
+    "api/tailor-resume.js": { "maxDuration": 30 }
   }
 }

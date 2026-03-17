@@ -88,6 +88,35 @@
   transform: none;
 }
 
+.editor-tailor-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  border: none;
+  padding: 0.45rem 1.1rem;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+.editor-tailor-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.editor-tailor-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111827;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 300;
+  pointer-events: none;
+}
+
 .editor-export-spinner {
   display: inline-block;
   width: 12px;
@@ -116,6 +145,44 @@
   flex-direction: column;
   border-right: 1px solid #E8E4DF;
   overflow: hidden;
+}
+
+/* ── Edit / Customize Toggle ── */
+.editor-panel-toggle {
+  display: flex;
+  border-bottom: 1px solid #E8E4DF;
+  background: #F5F3F0;
+  flex-shrink: 0;
+  padding: 6px 8px 0;
+  gap: 4px;
+}
+
+.editor-panel-btn {
+  flex: 1;
+  padding: 0.45rem 0.5rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #6B7280;
+  border-radius: 6px 6px 0 0;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  font-family: 'Inter', -apple-system, sans-serif;
+  white-space: nowrap;
+}
+
+.editor-panel-btn:hover:not(.active) {
+  color: #2B2B2B;
+  background: rgba(255,255,255,0.6);
+}
+
+.editor-panel-btn.active {
+  color: #2E5A88;
+  border-bottom-color: #2E5A88;
+  background: #fff;
+  font-weight: 700;
 }
 
 /* Section Navigation Tabs */
@@ -240,11 +307,37 @@
   white-space: nowrap;
 }
 
+.template-switcher-btn {
+  position: relative;
+}
+
 .template-switcher-btn:hover:not(.active) {
   border-color: #9CA3AF;
   background: rgba(255,255,255,0.95);
   color: #2B2B2B;
   transform: translateY(-1px);
+}
+
+/* Hover thumbnail popup */
+.ts-thumb-popup {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 106px;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.14);
+  overflow: hidden;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.template-switcher-btn:hover .ts-thumb-popup {
+  display: block;
 }
 
 .template-switcher-btn.active {

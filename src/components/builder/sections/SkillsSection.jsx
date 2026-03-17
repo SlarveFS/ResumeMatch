@@ -54,6 +54,9 @@ function SkillCategory({ categoryKey, label, skills, onAdd, onRemove }) {
 
 function SkillsSection({ resumeData, updateResumeData }) {
   const { skills } = resumeData;
+  const [loading, setLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [error, setError] = useState('');
 
   const addSkill = (category, skill) => {
     updateResumeData({
@@ -65,6 +68,45 @@ function SkillsSection({ resumeData, updateResumeData }) {
     updateResumeData({
       skills: { ...skills, [category]: skills[category].filter(s => s !== skill) }
     });
+  };
+
+  const handleSuggestSkills = async () => {
+    setLoading(true);
+    setError('');
+    setSuggestions([]);
+    const jobTitle =
+      (resumeData.experience?.length > 0 ? resumeData.experience[0].jobTitle : '') ||
+      resumeData.personalInfo?.jobTarget ||
+      'professional';
+    try {
+      const res = await fetch('/api/suggest-content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section: 'skills',
+          jobTitle,
+          currentSkills: [
+            ...(skills.technical || []),
+            ...(skills.tools || []),
+            ...(skills.soft || []),
+          ],
+        }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setSuggestions(data.skills || []);
+    } catch {
+      setError('Could not suggest skills. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddSuggested = (skill) => {
+    if (!(skills.technical || []).includes(skill)) {
+      addSkill('technical', skill);
+    }
+    setSuggestions(prev => prev.filter(s => s !== skill));
   };
 
   return (
@@ -85,10 +127,22 @@ function SkillsSection({ resumeData, updateResumeData }) {
           />
         ))}
       </div>
-      <button className="ai-btn" style={{ marginTop: '1rem' }} disabled>
-        ✨ Suggest Skills
-        <span className="ai-btn-soon">AI coming soon</span>
+      <button className="ai-btn" style={{ marginTop: '1rem' }} onClick={handleSuggestSkills} disabled={loading}>
+        {loading ? '⏳ Generating…' : '✨ Suggest Skills'}
       </button>
+      {error && <p className="ai-error">{error}</p>}
+      {suggestions.length > 0 && (
+        <div className="skill-suggestions">
+          <div className="skill-suggestions-header">Suggested skills — click to add</div>
+          <div className="skill-suggestion-chips">
+            {suggestions.map((skill, i) => (
+              <button key={i} className="skill-suggestion-chip" onClick={() => handleAddSuggested(skill)}>
+                + {skill}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

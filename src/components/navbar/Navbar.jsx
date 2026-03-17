@@ -44,14 +44,22 @@ function Navbar() {
             </Link>
           </li>
           <li>
-            <span className="navbar-link disabled">
-              Cover Letter <span className="coming-soon-badge">Soon</span>
-            </span>
+            <Link
+              to="/cover-letter"
+              className={`navbar-link ${isActive('/cover-letter') ? 'active' : ''}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              Cover Letter
+            </Link>
           </li>
           <li>
-            <span className="navbar-link disabled">
-              Dashboard <span className="coming-soon-badge">Soon</span>
-            </span>
+            <Link
+              to="/dashboard"
+              className={`navbar-link ${isActive('/dashboard') ? 'active' : ''}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              Dashboard
+            </Link>
           </li>
         </ul>
       </div>

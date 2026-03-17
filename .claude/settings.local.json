@@ -16,7 +16,16 @@
       "Bash(~/.nvm/versions/node/v22.22.0/bin/npm run:*)",
       "Bash(~/.nvm/versions/node/v22.22.0/bin/node --version)",
       "Bash(~/.nvm/versions/node/v22.22.0/bin/npm --version)",
-      "Bash(~/.nvm/versions/node/v22.22.0/bin/node ~/.nvm/versions/node/v22.22.0/bin/npm run build)"
+      "Bash(~/.nvm/versions/node/v22.22.0/bin/node ~/.nvm/versions/node/v22.22.0/bin/npm run build)",
+      "Bash(find /Users/slarven/Desktop/resumematch/src -type f \\\\\\(-name *.jsx -o -name *.js -o -name *.json \\\\\\))",
+      "Bash(command -v node)",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(/opt/homebrew/bin/npm run:*)",
+      "Bash(ls /opt/homebrew/bin/node*)",
+      "Read(//Users/slarven/.nvm/versions/**)",
+      "Read(//Users/slarven/Library/Caches/**)",
+      "Bash(PATH=\"/opt/homebrew/bin:$PATH\" npm run build)",
+      "Bash(/opt/homebrew/bin/node -e \":*)"
     ]
   }
 }

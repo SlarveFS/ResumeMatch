@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-import { TEMPLATES, DEFAULT_RESUME_DATA } from '../utils/templates';
-import { saveResumeData } from '../utils/storage';
+import { TEMPLATES, TEMPLATE_CATEGORIES, DEFAULT_RESUME_DATA } from '../utils/templates';
+import { saveResumeData, clearActiveResumeId } from '../utils/storage';
+import TemplateThumbnail from '../components/common/TemplateThumbnail';
 import './Builder.css';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
@@ -11,23 +12,57 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 // Merge Claude's extracted data with DEFAULT_RESUME_DATA structure,
 // adding UUIDs to array entries that need them.
 function mergeExtractedData(extracted) {
+  const pi = extracted.personalInfo || {};
+
+  // Parse fullName → firstName + lastName for the wizard's separate fields
+  // Claude now returns firstName/lastName directly; fullName is a fallback
+  const nameParts = (pi.fullName || '').trim().split(/\s+/).filter(Boolean);
+  const firstName = pi.firstName || nameParts[0] || '';
+  const lastName = pi.lastName || nameParts.slice(1).join(' ') || '';
+  // Reconstruct canonical fullName so PDF naming works correctly
+  const fullName = [firstName, lastName].filter(Boolean).join(' ') || pi.fullName || '';
+
+  // Infer jobTarget from most recent experience if not present
+  const jobTarget = pi.jobTarget || (extracted.experience?.[0]?.jobTitle) || '';
+
+  // Convert skills object → skillsWithLevel array for the wizard
+  const extSkills = extracted.skills || {};
+  const skillsWithLevel = [
+    ...(extSkills.technical || []).map(name => ({ name, level: 4 })),
+    ...(extSkills.tools || []).map(name => ({ name, level: 4 })),
+    ...(extSkills.soft || []).map(name => ({ name, level: 3 })),
+    ...(extSkills.languages || []).map(name => ({ name, level: 3 })),
+  ];
+
   return {
     ...DEFAULT_RESUME_DATA,
     personalInfo: {
       ...DEFAULT_RESUME_DATA.personalInfo,
-      ...(extracted.personalInfo || {}),
+      ...pi,
+      firstName,
+      lastName,
+      fullName,
+      jobTarget,
+      // Map location string → address field used by the wizard
+      address: pi.address || pi.location || '',
     },
     summary: extracted.summary || '',
-    experience: (extracted.experience || []).map(job => ({
-      id: crypto.randomUUID(),
-      jobTitle: job.jobTitle || '',
-      company: job.company || '',
-      location: job.location || '',
-      startDate: job.startDate || '',
-      endDate: job.endDate || '',
-      current: job.current || false,
-      bullets: Array.isArray(job.bullets) && job.bullets.length ? job.bullets : [''],
-    })),
+    experience: (extracted.experience || []).map(job => {
+      const bullets = Array.isArray(job.bullets) && job.bullets.length ? job.bullets : [];
+      return {
+        id: crypto.randomUUID(),
+        jobTitle: job.jobTitle || '',
+        company: job.company || '',
+        location: job.location || '',
+        startDate: job.startDate || '',
+        endDate: job.endDate || '',
+        current: job.current || false,
+        // description string is what the wizard textarea uses
+        description: bullets.filter(Boolean).join('\n'),
+        // keep bullets array for the expert editor
+        bullets: bullets.length ? bullets : [''],
+      };
+    }),
     education: (extracted.education || []).map(ed => ({
       id: crypto.randomUUID(),
       degree: ed.degree || '',
@@ -40,8 +75,10 @@ function mergeExtractedData(extracted) {
     })),
     skills: {
       ...DEFAULT_RESUME_DATA.skills,
-      ...(extracted.skills || {}),
+      ...extSkills,
     },
+    // skillsWithLevel is what the wizard's Step4Skills uses
+    skillsWithLevel,
     projects: (extracted.projects || []).map(proj => ({
       id: crypto.randomUUID(),
       name: proj.name || '',
@@ -63,28 +100,6 @@ const PROCESSING_STEPS = [
   { icon: '✨', text: 'Pre-filling your builder…' },
 ];
 
-// ── Template preview mockup ─────────────────────────────────────────────
-
-function TemplatePreviewMockup({ template }) {
-  return (
-    <div className={`mockup mockup-${template.id}`} style={{ '--accent': template.accent }}>
-      <div className="mockup-header" style={{ background: template.accent }}></div>
-      <div className="mockup-body">
-        <div className="mockup-line mockup-line-wide"></div>
-        <div className="mockup-line mockup-line-medium"></div>
-        <div className="mockup-spacer"></div>
-        <div className="mockup-line mockup-line-wide"></div>
-        <div className="mockup-line mockup-line-narrow"></div>
-        <div className="mockup-line mockup-line-medium"></div>
-        <div className="mockup-spacer"></div>
-        <div className="mockup-line mockup-line-wide"></div>
-        <div className="mockup-line mockup-line-narrow"></div>
-        <div className="mockup-line mockup-line-medium"></div>
-      </div>
-    </div>
-  );
-}
-
 // ── Main component ──────────────────────────────────────────────────────
 
 function Builder() {
@@ -94,6 +109,7 @@ function Builder() {
   const [step, setStep] = useState('path');
   const [selectedPath, setSelectedPath] = useState(null); // 'scratch' | 'import'
   const [selectedTemplate, setSelectedTemplate] = useState('classic');
+  const [activeCategory, setActiveCategory] = useState('All');
 
   // Upload step state
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -207,20 +223,32 @@ function Builder() {
 
   // ── Start building ────────────────────────────────────────────────────
 
-  const handleStartBuilding = () => {
-    let baseData;
+  const buildBaseData = () => {
     if (selectedPath === 'import' && extractedData) {
-      baseData = mergeExtractedData(extractedData);
-    } else {
-      baseData = { ...DEFAULT_RESUME_DATA };
+      return mergeExtractedData(extractedData);
     }
+    return { ...DEFAULT_RESUME_DATA };
+  };
 
+  const handleStartBuilding = () => {
+    // After template selection, show mode selection
+    setStep('mode');
+  };
+
+  const handleModeSelect = (mode) => {
+    const baseData = buildBaseData();
+    // Clear active ID so saveResumeData creates a fresh multi-resume entry
+    clearActiveResumeId();
     saveResumeData({
       ...baseData,
       selectedTemplate,
       importedResume: selectedPath === 'import' && !!extractedData,
     });
-    navigate('/builder/edit');
+    if (mode === 'guided') {
+      navigate('/builder/wizard');
+    } else {
+      navigate('/builder/edit');
+    }
   };
 
   // ── Path selection ────────────────────────────────────────────────────
@@ -379,6 +407,36 @@ function Builder() {
     );
   }
 
+  // ── Mode selection step ───────────────────────────────────────────────
+
+  if (step === 'mode') {
+    return (
+      <div className="builder-page">
+        <div className="builder-page-inner builder-page-inner--narrow">
+          <button className="builder-back-btn" onClick={() => setStep('template')}>← Back</button>
+          <div className="builder-page-header">
+            <h1>How would you like to build?</h1>
+            <p>Choose your experience level — you can switch anytime.</p>
+          </div>
+          <div className="path-cards">
+            <button className="path-card path-card-guided" onClick={() => handleModeSelect('guided')}>
+              <div className="path-card-icon">🧭</div>
+              <h2>Guided Mode</h2>
+              <p>We'll walk you through step by step with tips, score tracking, and AI suggestions.</p>
+              <span className="path-card-action path-card-recommended">★ Recommended →</span>
+            </button>
+            <button className="path-card" onClick={() => handleModeSelect('expert')}>
+              <div className="path-card-icon">⚡</div>
+              <h2>Expert Mode</h2>
+              <p>See everything at once — all sections in one view for experienced resume writers.</p>
+              <span className="path-card-action">Open Editor →</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // ── Template selection step ───────────────────────────────────────────
 
   return (
@@ -400,18 +458,39 @@ function Builder() {
           <p>Select a layout that fits your industry and style.</p>
         </div>
 
+        <div className="template-filter-tabs">
+          {TEMPLATE_CATEGORIES.map(cat => (
+            <button
+              key={cat}
+              className={`template-filter-tab ${activeCategory === cat ? 'active' : ''}`}
+              onClick={() => setActiveCategory(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
         <div className="template-grid">
-          {TEMPLATES.map((tpl) => (
+          {TEMPLATES.filter(tpl =>
+            activeCategory === 'All' || tpl.categories.includes(activeCategory)
+          ).map((tpl) => (
             <button
               key={tpl.id}
               className={`template-card ${selectedTemplate === tpl.id ? 'selected' : ''}`}
               onClick={() => setSelectedTemplate(tpl.id)}
             >
-              <div className="template-preview" style={{ borderTop: `4px solid ${tpl.accent}` }}>
-                <TemplatePreviewMockup template={tpl} />
+              <div className="template-preview">
+                <TemplateThumbnail template={tpl} />
+                <div className="template-hover-overlay">Use Template</div>
               </div>
               <div className="template-card-info">
-                <h3>{tpl.name}</h3>
+                <div className="template-card-name-row">
+                  <h3>{tpl.name}</h3>
+                  <div className="template-card-badges">
+                    {tpl.ats && <span className="template-ats-badge">ATS</span>}
+                    <span className="template-color-dot" style={{ background: tpl.accent }} />
+                  </div>
+                </div>
                 <p>{tpl.description}</p>
                 <div className="template-tags">
                   {tpl.bestFor.map(tag => (

@@ -467,11 +467,24 @@
   font-weight: 600;
   padding: 0.55rem 1rem;
   border-radius: 8px;
-  cursor: not-allowed;
+  cursor: pointer;
   margin-top: 0.75rem;
-  opacity: 0.8;
   width: 100%;
   justify-content: center;
+  font-family: 'Inter', -apple-system, sans-serif;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.ai-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f0ebff, #e9e0ff);
+  border-color: #C084FC;
+  transform: translateY(-1px);
+}
+
+.ai-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .ai-btn-small {
@@ -485,16 +498,226 @@
   font-weight: 600;
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
-  cursor: not-allowed;
-  opacity: 0.8;
+  cursor: pointer;
+  font-family: 'Inter', -apple-system, sans-serif;
+  transition: background 0.15s, border-color 0.15s;
 }
 
-.ai-btn-soon {
-  background: #EDE9FE;
+.ai-btn-small:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f0ebff, #e9e0ff);
+  border-color: #C084FC;
+}
+
+.ai-btn-small:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── AI Error ── */
+.ai-error {
+  color: #DC2626;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+/* ── Summary AI Suggestions ── */
+.ai-suggestions {
+  margin-top: 1rem;
+  border: 1.5px solid #EDE9FE;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ai-suggestions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  background: #F5F3FF;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6D28D9;
+  border-bottom: 1px solid #EDE9FE;
+}
+
+.ai-regen-btn {
+  background: none;
+  border: none;
   color: #7C3AED;
-  font-size: 0.68rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  font-family: 'Inter', -apple-system, sans-serif;
+  transition: background 0.15s;
+}
+
+.ai-regen-btn:hover:not(:disabled) {
+  background: #EDE9FE;
+}
+
+.ai-regen-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ai-suggestion-card {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid #F3F4F6;
+  background: #fff;
+}
+
+.ai-suggestion-card:last-child {
+  border-bottom: none;
+}
+
+.ai-suggestion-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.ai-tone-tag {
+  font-size: 0.7rem;
   font-weight: 700;
-  padding: 0.12rem 0.45rem;
-  border-radius: 4px;
-  letter-spacing: 0.03em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  border: 1px solid;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ai-use-btn {
+  background: none;
+  border: 1.5px solid #D1D5DB;
+  color: #374151;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.22rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Inter', -apple-system, sans-serif;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.ai-use-btn:hover {
+  border-color: #7C3AED;
+  color: #7C3AED;
+  background: #F5F3FF;
+}
+
+.ai-suggestion-text {
+  font-size: 0.85rem;
+  color: #374151;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Bullet AI Suggestions ── */
+.bullet-suggestions {
+  margin-top: 0.75rem;
+  border: 1.5px solid #EDE9FE;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.bullet-suggestions-header {
+  padding: 0.45rem 0.75rem;
+  background: #F5F3FF;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6D28D9;
+  border-bottom: 1px solid #EDE9FE;
+}
+
+.bullet-suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.83rem;
+  color: #374151;
+  cursor: pointer;
+  border-bottom: 1px solid #F3F4F6;
+  transition: background 0.12s;
+  line-height: 1.45;
+}
+
+.bullet-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.bullet-suggestion-item:hover {
+  background: #F5F3FF;
+}
+
+.bullet-suggestion-plus {
+  color: #7C3AED;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Skill AI Suggestions ── */
+.skill-suggestions {
+  margin-top: 0.75rem;
+}
+
+.skill-suggestions-header {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6D28D9;
+  margin-bottom: 0.5rem;
+}
+
+.skill-suggestion-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.skill-suggestion-chip {
+  background: #F5F3FF;
+  border: 1.5px dashed #C084FC;
+  color: #7C3AED;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Inter', -apple-system, sans-serif;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.skill-suggestion-chip:hover {
+  background: #EDE9FE;
+  border-color: #7C3AED;
+  transform: translateY(-1px);
+}
+
+/* ── AI Icon Button (per-bullet improve) ── */
+.ai-icon-btn {
+  background: none;
+  border: 1.5px solid #E5E7EB;
+  color: #9CA3AF;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.4rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  line-height: 1;
+}
+
+.ai-icon-btn:hover:not(:disabled) {
+  background: #F5F3FF;
+  border-color: #C084FC;
+  color: #7C3AED;
+}
+
+.ai-icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }

@@ -1,167 +1,190 @@
-# ◎ ResumeMatch
+# ResumeMatch — AI-Powered Resume Platform
 
-**AI-powered resume platform. Analyze, build, and perfect your resume — 100% free, no watermarks, no paywalls.**
+**Build, analyze, and optimize professional resumes for free.** No account required. No watermarks. No paywalls.
 
-🔗 **Live App:** [resume-match-gilt.vercel.app](https://resume-match-gilt.vercel.app)
-
-![ResumeMatch Screenshot](./resume.screenshot.png)
+Live: [resume-match-gilt.vercel.app](https://resume-match-gilt.vercel.app)
 
 -----
 
 ## Why ResumeMatch?
 
-Resume builders like Resume.io and Zety charge $20–40/month just to download your own resume as a PDF. That’s not right.
+Most resume builders charge $25–50/month for AI features, lock PDF downloads behind paywalls, and require account creation before you can start. ResumeMatch gives you everything for free — AI-powered writing, 15 professional templates, job tailoring, cover letters, and unlimited PDF exports. Start building in seconds, no signup needed.
 
-ResumeMatch gives you everything — AI writing assistance, professional templates, resume analysis, and PDF export — completely free. No trials, no paywalls, no watermarks.
+-----
 
 ## Features
 
-### Resume Builder
+### Step-by-Step Resume Wizard
 
-- **6 Professional Templates** — Classic, Modern, Minimal, Bold, Tech, and Creative. Each designed for different industries and roles, all ATS-optimized
-- **Live Preview** — See your resume update in real-time as you type, exactly as it will appear in the exported PDF
-- **Template Switcher** — Switch between templates instantly without losing any data
-- **Section Editor** — Personal Info, Professional Summary, Experience, Education, Skills, Projects, and custom sections. Add, remove, reorder, and toggle sections on/off
-- **Free PDF Export** — Download your finished resume as a pixel-perfect PDF. No watermark. No signup required. No paywall.
+A guided 7-step flow walks you through building a professional resume from scratch. Each step focuses on one section with helpful tips, recruiter insights, and character count targets. A gamified resume score bar tracks your progress in real-time, showing exactly what to add next to strengthen your resume.
 
-### Import & Improve
+### AI-Powered Writing Tools
 
-- **Upload your existing resume** (PDF, DOCX, or paste text) and AI automatically extracts all your information
-- **Pre-fills the entire builder** — name, contact info, experience, education, skills, projects — all parsed and structured instantly
-- **Improve with AI** — once imported, use AI tools to enhance every section of your resume
+- **Improve with AI** — Enhance any bullet point with stronger action verbs and quantified achievements
+- **Pre-written Phrases** — Get role-specific bullet points and summary suggestions based on your job title
+- **AI Summary Generator** — Generate 2-3 professional summary options with tone selection (Professional, Enthusiastic, Confident)
+- **Suggested Skills** — AI recommends relevant skills based on your target role with one-click add and refresh
 
-### AI Writing Assistance
+### 15 Professional Templates
 
-- **AI Summary Writer** — generates professional summary options based on your role and experience
-- **AI Bullet Improver** — transforms weak bullet points into strong, quantified achievement statements
-- **AI Bullet Generator** — describe what you did in plain English, get polished professional bullets
-- **AI Skills Suggester** — recommends relevant skills based on your experience and target role
-- **AI Tailor to Job** — paste a job description and AI rewrites your resume to match the specific role
+Choose from 15 professionally designed templates across multiple categories: Simple, Modern, Creative, Professional, ATS-optimized, and Two-Column layouts. Every template shows a realistic preview with sample data so you can see exactly what it looks like before selecting.
+
+### Full Design Customization
+
+- **Templates** — Switch between 15 designs instantly
+- **Layout** — Left Column, Centered, or Right Column arrangements
+- **Fonts** — 8 professional font families with Dense, Normal, or Loose spacing
+- **Colors** — 8 accent color presets applied to headers, dividers, and name
 
 ### Resume Analyzer
 
-- **Match Score** — get a 0-100% score showing how well your resume fits a job description
-- **Missing Keywords** — see exactly which important terms from the job description are missing
-- **Suggested Bullets** — AI-generated resume bullet points tailored to the specific job
-- **Strengths Report** — understand what your resume already does well for the role
-- **PDF Upload** — upload your resume as a PDF instead of copy-pasting
-- **URL Auto-Extract** — paste a job posting URL and automatically extract the description
-- **Analysis History** — save and compare results across multiple job applications
-- **PDF Export** — download your analysis as a professional report
+Paste any job description alongside your resume and get an AI-powered analysis: keyword match scoring, missing skills identification, and section-by-section improvement suggestions.
+
+### Import & Improve
+
+Upload an existing resume (PDF) and AI extracts all your data — experience, education, skills, summary — directly into the editor. Every field is pre-populated so you can start improving immediately instead of retyping.
+
+### Job Tailoring
+
+Paste a job description and AI rewrites your summary, improves bullet points with job-specific keywords, suggests skill additions, and shows an ATS keyword match percentage. Accept changes individually or all at once, with the option to save as a new resume version.
+
+### Cover Letter Builder
+
+Generate AI-powered cover letters matched to your resume design. Select a tone, paste a job description, and get a complete cover letter with editable sections. Export as a professionally formatted PDF.
+
+### Resume Dashboard
+
+Manage multiple resumes from a central dashboard. Each resume card shows a thumbnail preview with your actual content, resume score, and quick actions: Edit, Copy, Download, Delete, and Tailor to Job. Rename resumes for different applications.
+
+### Free PDF Export
+
+Download polished PDFs that match your preview exactly — properly formatted across multiple pages with correct margins and page breaks. Files are named automatically (FirstName_LastName_Resume.pdf).
+
+-----
 
 ## Tech Stack
 
-|Layer         |Technology                                                         |
-|--------------|-------------------------------------------------------------------|
-|Frontend      |React, Vite, React Router                                          |
-|Backend       |Node.js, Express (local) / Vercel Serverless Functions (production)|
-|AI            |Anthropic Claude API (claude-sonnet-4-20250514)                    |
-|PDF Generation|jsPDF, html2canvas                                                 |
-|PDF Parsing   |pdf-parse                                                          |
-|Styling       |Custom CSS                                                         |
-|Deployment    |Vercel                                                             |
+|Layer     |Technology                          |
+|----------|------------------------------------|
+|Frontend  |React (Vite), React Router          |
+|Backend   |Express, Vercel Serverless Functions|
+|AI        |Anthropic Claude API                |
+|PDF       |jspdf, html2canvas, pdf-parse       |
+|Storage   |localStorage (no database, no auth) |
+|Deployment|Vercel                              |
 
-## How to Run Locally
+-----
+
+## How It Compares
+
+|Feature             |ResumeMatch  |Resume.io  |Resume.co  |ResumeNow  |
+|--------------------|:-----------:|:---------:|:---------:|:---------:|
+|Price               |**Free**     |$30/mo     |$50/mo     |$2.75/mo   |
+|Account Required    |**No**       |Yes        |Yes        |Yes        |
+|AI Writing Tools    |**Free**     |Paid add-on|Paid add-on|Paid add-on|
+|Resume Analyzer     |**Yes**      |No         |No         |No         |
+|Job Tailoring       |**Free**     |Paid       |Paid       |No         |
+|PDF Export          |**Free**     |Paid       |Paid       |Paid       |
+|Templates           |15           |30+        |6+         |32+        |
+|Cover Letters       |**Free**     |Paid       |Paid       |Paid       |
+|Multiple Resumes    |**Unlimited**|Paid       |Paid       |Paid       |
+|Watermarks          |**None**     |None       |None       |None       |
+|Import & Improve    |**Yes**      |Yes        |Yes        |Yes        |
+|Design Customization|**Yes**      |Yes        |Yes        |Limited    |
+|Step-by-Step Wizard |**Yes**      |Yes        |Yes        |Yes        |
+|Resume Score        |**Yes**      |Yes        |Yes        |No         |
+
+-----
+
+## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
-- An [Anthropic API key](https://console.anthropic.com/)
+- Anthropic API key
 
-### Setup
+### Local Development
 
 ```bash
-# Clone the repo
 git clone https://github.com/SlarveFS/ResumeMatch.git
 cd ResumeMatch
-
-# Install dependencies
 npm install
-
-# Create your .env file
-echo "ANTHROPIC_API_KEY=your-api-key-here" > .env
-
-# Start the development server
-node server.js
 ```
 
-Open **http://localhost:3000** in your browser.
+Create a `.env` file:
 
-## How It Works
+```
+ANTHROPIC_API_KEY=your-api-key-here
+```
 
-### Build a Resume
+Start the development server:
 
-1. Choose **Start from scratch** or **Import & Improve** (upload an existing resume)
-1. Pick a professional template
-1. Fill in your information — AI assists with writing at every step
-1. Preview your resume in real-time, switch templates anytime
-1. Download as a free PDF — no watermark, no paywall
+```bash
+npm run dev
+```
 
-### Analyze a Resume
+Open <http://localhost:5173>
 
-1. Upload your resume PDF or paste the text
-1. Add a job description by pasting text or entering a URL
-1. Get an AI-powered analysis with match score, missing keywords, strengths, and suggested improvements
-1. Export the analysis as a PDF report
+### Deployment
 
-## What Makes This Different
+The project is configured for Vercel deployment with serverless functions in the `/api` directory.
 
-|                    |ResumeMatch       |Resume.io  |MyPerfectResume|Zety      |
-|--------------------|------------------|-----------|---------------|----------|
-|**Price**           |Free              |$30/month  |$24/month      |$24/month |
-|**PDF Export**      |Free, no watermark|Paid only  |Paid only      |Paid only |
-|**AI Writing**      |Built-in          |Limited    |Limited        |Basic     |
-|**Resume Analysis** |Full ATS analysis |Basic score|None           |Basic     |
-|**Import & Improve**|AI extraction     |Upload only|No             |No        |
-|**Templates**       |6 professional    |20+ (paid) |30+ (paid)     |20+ (paid)|
+```bash
+vercel --prod
+```
+
+Set `ANTHROPIC_API_KEY` in your Vercel environment variables.
+
+-----
 
 ## Project Structure
 
 ```
-resumematch/
-├── api/                        # Vercel serverless functions
-│   ├── analyze.js              # Resume analysis
-│   ├── extract-pdf.js          # PDF text extraction
-│   ├── extract-url.js          # URL content extraction
-│   ├── extract-resume-data.js  # AI resume data parsing
-│   ├── generate-summary.js     # AI summary writer
-│   ├── improve-bullet.js       # AI bullet improver
-│   ├── generate-bullets.js     # AI bullet generator
-│   └── suggest-skills.js       # AI skills suggester
+ResumeMatch/
+├── api/                          # Vercel serverless functions
+│   ├── analyze.js                # Resume analysis endpoint
+│   ├── suggest-content.js        # AI content suggestions
+│   ├── improve-content.js        # Bullet point improvement
+│   ├── generate-cover-letter.js  # Cover letter generation
+│   └── tailor-resume.js          # Job tailoring
 ├── src/
 │   ├── components/
-│   │   ├── navbar/             # Top navigation
-│   │   ├── analyzer/           # Resume analysis UI
-│   │   ├── builder/            # Resume builder
-│   │   │   ├── sections/       # Editor form sections
-│   │   │   ├── ai/             # AI feature components
-│   │   │   ├── templates/      # Template CSS styles
-│   │   │   └── export/         # PDF export
-│   │   └── common/             # Shared components
-│   ├── pages/                  # Route pages
-│   ├── utils/                  # Helpers and configs
-│   ├── App.jsx
-│   └── App.css
-├── server.js                   # Express server (local dev)
+│   │   ├── wizard/               # Step-by-step builder
+│   │   ├── customization/        # Design customization panel
+│   │   ├── dashboard/            # Resume management
+│   │   ├── cover-letter/         # Cover letter builder
+│   │   └── templates/            # 15 resume templates
+│   ├── pages/                    # Route pages
+│   └── App.jsx                   # Main app with routing
+├── server.js                     # Express server (local dev)
 └── package.json
 ```
 
-## Roadmap
+-----
 
-- [x] Resume Analyzer with AI
-- [x] Resume Builder with templates
-- [x] Import & Improve with AI extraction
-- [x] AI writing assistance
-- [x] Free PDF export
-- [ ] Cover Letter Generator
-- [ ] Job Search Dashboard
-- [ ] Mobile App (iOS & Android)
+## Key Features for Portfolio Discussion
 
-## Author
+**Problem Solved:** Resume builders charge $25-50/month and lock essential features behind paywalls. Job seekers — especially those early in their careers — shouldn’t have to pay to create a professional resume.
 
-**Slarve Benoit** — Software Developer
-[GitHub](https://github.com/SlarveFS)
+**Technical Highlights:**
+
+- Full-stack React application with Express backend and Vercel serverless deployment
+- Anthropic Claude API integration for 5 distinct AI features (analysis, content generation, improvement, cover letters, job tailoring)
+- Real-time resume scoring algorithm with gamified progress tracking
+- Dynamic PDF generation with multi-page support and proper formatting
+- PDF parsing and AI-powered data extraction for resume import
+- 15 customizable templates with live preview rendering
+- localStorage-based state management supporting unlimited documents
+- Form validation, date pickers, location autocomplete, and responsive design
+
+**Competitive Research:** Analyzed Resume.io, Resume.co, ResumeNow, MyPerfectResume, and FlowCV to identify the best UX patterns — then implemented them in a free product that matches or exceeds the paid experience.
 
 -----
 
-*Built with React, Claude AI, and shipped to production. 100% free, forever.*
+## License
+
+MIT
+
+-----
+
+Built by [Slarve Benoit](https://github.com/SlarveFS)

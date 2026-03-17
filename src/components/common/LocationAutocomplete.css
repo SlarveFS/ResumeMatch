@@ -1,0 +1,43 @@
+.loc-wrapper {
+  position: relative;
+}
+
+.loc-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1.5px solid #D6D2CC;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 200;
+  list-style: none;
+  margin: 0;
+  padding: 0.3rem 0;
+  overflow: hidden;
+}
+
+.loc-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.875rem;
+  color: #2B2B2B;
+  cursor: pointer;
+  transition: background 0.1s;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.loc-option:hover,
+.loc-option.active {
+  background: #F0F4FF;
+  color: #2E5A88;
+}
+
+.loc-icon {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  flex-shrink: 0;
+}

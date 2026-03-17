@@ -1,0 +1,32 @@
+/* ── Thumbnail outer shell ─────────────────────────────────────── */
+.tt-outer {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #f0ede8;
+}
+
+/* ── Scaled resume paper wrapper ──────────────────────────────── */
+.tt-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Strip preview-container styles when inside a thumbnail ────── */
+.tt-outer .preview-container {
+  background: transparent !important;
+  padding: 0 !important;
+  flex: none !important;
+}
+
+/* Remove the paper's box-shadow / border-radius if any shows */
+.tt-outer .resume-paper {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}

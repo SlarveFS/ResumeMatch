@@ -1,0 +1,64 @@
+.myp-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.myp-selects {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.myp-selects.myp-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.myp-select {
+  flex: 1;
+  height: 40px;
+  padding: 0 0.65rem;
+  border: 1.5px solid #D6D2CC;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #1a1a1a;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'Inter', -apple-system, sans-serif;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2378716C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  padding-right: 1.8rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  min-width: 0;
+}
+
+.myp-select:focus {
+  outline: none;
+  border-color: #4A90D9;
+  box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.15);
+}
+
+.myp-select:disabled {
+  background-color: #F8F6F3;
+  cursor: not-allowed;
+}
+
+.myp-present-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: #57534E;
+  cursor: pointer;
+  font-family: 'Inter', -apple-system, sans-serif;
+  user-select: none;
+}
+
+.myp-present-label input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #2E5A88;
+  cursor: pointer;
+}

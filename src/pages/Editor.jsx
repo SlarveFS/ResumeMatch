@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { loadResumeData, saveResumeData } from '../utils/storage';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { loadResumeData, saveResumeData, addResumeToStore } from '../utils/storage';
 import { DEFAULT_RESUME_DATA, TEMPLATES } from '../utils/templates';
 import { exportResumeToPDF } from '../utils/pdfExport';
 import PersonalInfoSection from '../components/builder/sections/PersonalInfoSection';
@@ -10,15 +10,22 @@ import EducationSection from '../components/builder/sections/EducationSection';
 import SkillsSection from '../components/builder/sections/SkillsSection';
 import ProjectsSection from '../components/builder/sections/ProjectsSection';
 import LivePreview from '../components/builder/LivePreview';
+import CustomizePanel from '../components/customize/CustomizePanel';
+import TailorPanel from '../components/tailoring/TailorPanel';
+import TemplateThumbnail from '../components/common/TemplateThumbnail';
 import './Editor.css';
 
 function Editor() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [resumeData, setResumeData] = useState(DEFAULT_RESUME_DATA);
   const [lastSaved, setLastSaved] = useState(null);
   const [activeSection, setActiveSection] = useState('personal');
+  const [panelMode, setPanelMode] = useState('edit'); // 'edit' | 'customize'
   const [isExporting, setIsExporting] = useState(false);
   const [showImportBanner, setShowImportBanner] = useState(false);
+  const [showTailor, setShowTailor] = useState(false);
+  const [tailorToast, setTailorToast] = useState('');
   const saveTimer = useRef(null);
   const paperRef = useRef(null);
 
@@ -35,6 +42,9 @@ function Editor() {
       } else {
         setResumeData(saved);
       }
+    }
+    if (searchParams.get('tailor') === '1') {
+      setShowTailor(true);
     }
   }, []);
 
@@ -60,6 +70,18 @@ function Editor() {
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
+  }, []);
+
+  const handleTailorApply = useCallback((tailoredData) => {
+    updateResumeData(tailoredData);
+    setShowTailor(false);
+  }, [updateResumeData]);
+
+  const handleSaveVersion = useCallback((tailoredData) => {
+    const name = (tailoredData.personalInfo?.fullName || 'Resume') + ' (Tailored)';
+    addResumeToStore(tailoredData, name);
+    setTailorToast('Saved as new version in your dashboard!');
+    setTimeout(() => setTailorToast(''), 3500);
   }, []);
 
   const handleExportPDF = async () => {
@@ -98,6 +120,17 @@ function Editor() {
 
   return (
     <div className="editor-page">
+      {showTailor && (
+        <TailorPanel
+          resumeData={resumeData}
+          onApply={handleTailorApply}
+          onSaveVersion={handleSaveVersion}
+          onClose={() => setShowTailor(false)}
+        />
+      )}
+      {tailorToast && (
+        <div className="editor-tailor-toast">{tailorToast}</div>
+      )}
         {/* Import success banner */}
         {showImportBanner && (
           <div className="editor-import-banner">
@@ -118,6 +151,13 @@ function Editor() {
             </span>
           )}
           <button
+            className="editor-tailor-btn"
+            onClick={() => setShowTailor(true)}
+            title="Tailor resume to a job description"
+          >
+            ✨ Tailor
+          </button>
+          <button
             className="editor-export-btn"
             onClick={handleExportPDF}
             disabled={isExporting}
@@ -133,26 +173,51 @@ function Editor() {
       </div>
 
       <div className="editor-layout">
-        {/* Left Panel: Form */}
+        {/* Left Panel: Form or Customize */}
         <div className="editor-left">
-          {/* Section Nav */}
-          <div className="editor-section-nav">
-            {sections.map(s => (
-              <button
-                key={s.id}
-                className={`editor-section-tab ${activeSection === s.id ? 'active' : ''}`}
-                onClick={() => setActiveSection(s.id)}
-              >
-                <span className="tab-icon">{s.icon}</span>
-                <span className="tab-label">{s.label}</span>
-              </button>
-            ))}
+          {/* Edit / Customize toggle */}
+          <div className="editor-panel-toggle">
+            <button
+              className={`editor-panel-btn ${panelMode === 'edit' ? 'active' : ''}`}
+              onClick={() => setPanelMode('edit')}
+            >
+              Edit Content
+            </button>
+            <button
+              className={`editor-panel-btn ${panelMode === 'customize' ? 'active' : ''}`}
+              onClick={() => setPanelMode('customize')}
+            >
+              Customize Design
+            </button>
           </div>
 
-          {/* Section Content */}
-          <div className="editor-section-content">
-            {renderSection()}
-          </div>
+          {panelMode === 'edit' ? (
+            <>
+              {/* Section Nav */}
+              <div className="editor-section-nav">
+                {sections.map(s => (
+                  <button
+                    key={s.id}
+                    className={`editor-section-tab ${activeSection === s.id ? 'active' : ''}`}
+                    onClick={() => setActiveSection(s.id)}
+                  >
+                    <span className="tab-icon">{s.icon}</span>
+                    <span className="tab-label">{s.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Section Content */}
+              <div className="editor-section-content">
+                {renderSection()}
+              </div>
+            </>
+          ) : (
+            <CustomizePanel
+              resumeData={resumeData}
+              onChange={updateResumeData}
+            />
+          )}
         </div>
 
         {/* Right Panel: Live Preview */}
@@ -167,18 +232,17 @@ function Editor() {
                     key={t.id}
                     className={`template-switcher-btn${isActive ? ' active' : ''}`}
                     onClick={() => updateResumeData({ selectedTemplate: t.id })}
-                    title={t.description}
                     style={isActive ? {
                       borderColor: t.accent,
                       color: t.accent,
                       background: t.accent + '18',
                     } : {}}
                   >
-                    <span
-                      className="template-switcher-dot"
-                      style={{ background: t.accent }}
-                    />
+                    <span className="template-switcher-dot" style={{ background: t.accent }} />
                     {t.name}
+                    <div className="ts-thumb-popup">
+                      <TemplateThumbnail template={t} />
+                    </div>
                   </button>
                 );
               })}

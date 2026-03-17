@@ -195,18 +195,32 @@ app.post("/api/extract-resume-data", async (req, res) => {
   try {
     const message = await client.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 3000,
+      max_tokens: 4000,
       messages: [
         {
           role: "user",
-          content: `Extract all structured data from this resume and return ONLY valid JSON with this exact structure. No markdown, no backticks, no explanation — just the raw JSON object.
+          content: `You are an expert resume parser. Extract ALL structured data from this resume and return ONLY valid JSON. No markdown, no backticks, no explanation — just the raw JSON object.
+
+CRITICAL RULES:
+1. Extract EVERY bullet point from EVERY job — do not skip or summarize any bullet
+2. Parse the full name: split into first and last name parts
+3. For dates, preserve the exact format shown (e.g. "Jan 2020", "2021", "March 2019")
+4. If a person is currently employed, set "current": true and leave endDate empty
+5. Categorize ALL skills into the correct category — technical, tools, soft, languages
+6. Extract the professional summary/objective verbatim if present
+7. Include ALL education entries with ALL fields you can find
+
+Return this exact JSON structure (all fields required, use "" or [] if not found):
 
 {
   "personalInfo": {
-    "fullName": "",
+    "fullName": "First Last",
+    "firstName": "First",
+    "lastName": "Last",
     "email": "",
     "phone": "",
     "location": "",
+    "address": "",
     "linkedin": "",
     "github": "",
     "website": ""
@@ -220,7 +234,7 @@ app.post("/api/extract-resume-data", async (req, res) => {
       "startDate": "",
       "endDate": "",
       "current": false,
-      "bullets": [""]
+      "bullets": ["every bullet point exactly as written", "another bullet"]
     }
   ],
   "education": [
@@ -228,6 +242,7 @@ app.post("/api/extract-resume-data", async (req, res) => {
       "degree": "",
       "school": "",
       "location": "",
+      "startDate": "",
       "graduationDate": "",
       "gpa": "",
       "honors": "",
@@ -235,11 +250,11 @@ app.post("/api/extract-resume-data", async (req, res) => {
     }
   ],
   "skills": {
-    "technical": [],
-    "soft": [],
-    "tools": [],
-    "languages": [],
-    "certifications": []
+    "technical": ["programming languages, frameworks, technical skills"],
+    "soft": ["communication, leadership, teamwork"],
+    "tools": ["software tools, platforms, SaaS tools"],
+    "languages": ["spoken languages"],
+    "certifications": ["certifications, licenses"]
   },
   "projects": [
     {
@@ -252,8 +267,6 @@ app.post("/api/extract-resume-data", async (req, res) => {
   ],
   "certifications": []
 }
-
-Extract as much data as possible. If a field isn't present, leave it as empty string or empty array. For dates, use the exact format shown in the resume. For skills, intelligently categorize them into technical, soft, tools, languages, and certifications.
 
 RESUME TEXT:
 ${text}`,
@@ -268,6 +281,279 @@ ${text}`,
   } catch (err) {
     console.error("Resume extraction error:", err);
     res.status(500).json({ error: "Extraction failed. Please try again." });
+  }
+});
+
+app.post("/api/suggest-content", async (req, res) => {
+  const { section, jobTitle, currentContent, experienceSummary, resumeData } = req.body;
+
+  if (!section) return res.status(400).json({ error: "section is required" });
+
+  try {
+    let prompt = "";
+
+    if (section === "summary") {
+      const contextLines = [];
+      if (currentContent) contextLines.push(`Current summary: "${currentContent}"`);
+      if (experienceSummary) contextLines.push(`Experience: ${experienceSummary}`);
+      if (resumeData?.experience?.length) {
+        const expSnippet = resumeData.experience
+          .map(e => `${e.jobTitle || ""}${e.company ? ` at ${e.company}` : ""}${e.description ? `: ${e.description.slice(0, 150)}` : ""}`)
+          .filter(Boolean)
+          .join("\n");
+        if (expSnippet) contextLines.push(`Work history:\n${expSnippet}`);
+      }
+      if (resumeData?.skills?.length) {
+        contextLines.push(`Key skills: ${resumeData.skills.slice(0, 8).join(", ")}`);
+      }
+
+      prompt = `Generate 3 professional resume summary paragraphs for a ${jobTitle || "professional"}.
+
+${contextLines.join("\n\n")}
+
+Generate exactly 3 distinct summaries with different tones. Each should be 2-4 sentences and 400-600 characters long. They should mention the target role "${jobTitle || "the role"}" naturally.
+
+Return ONLY valid JSON with no markdown or explanation:
+{
+  "summaries": [
+    {"tone": "Enthusiastic", "text": "..."},
+    {"tone": "Professional", "text": "..."},
+    {"tone": "Confident", "text": "..."}
+  ]
+}`;
+    } else if (section === "bullets") {
+      prompt = `Generate 8 strong resume bullet points for a ${jobTitle || "professional"} role.
+
+Each bullet should start with a powerful action verb, include specific quantified metrics or outcomes, and be under 120 characters. Make them realistic and impressive.
+
+Return ONLY valid JSON with no markdown: {"bullets": ["bullet 1", "bullet 2", ...]}`;
+    } else if (section === "skills") {
+      prompt = `List the 10 most important and in-demand skills for a ${jobTitle || "professional"} role. Mix technical skills with relevant soft skills and tools. Return short, specific skill names (1-3 words each).
+
+Return ONLY valid JSON with no markdown: {"skills": ["skill1", "skill2", ...]}`;
+    } else if (section === "review") {
+      const context = resumeData ? JSON.stringify(resumeData).slice(0, 2000) : currentContent || "";
+      prompt = `You are an expert resume coach. Review this resume and provide specific, actionable feedback.
+
+Resume: ${context}
+
+Provide 5-7 specific improvement suggestions covering: missing keywords, weak bullet points, incomplete sections, and overall impact.
+
+Return ONLY valid JSON:
+{
+  "feedback": [{"category": "...", "issue": "...", "suggestion": "..."}, ...],
+  "overallAdvice": "..."
+}`;
+    } else {
+      return res.status(400).json({ error: "Unknown section type" });
+    }
+
+    const message = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1500,
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    const raw = message.content[0].text;
+    const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    res.json(JSON.parse(cleaned));
+  } catch (err) {
+    console.error("suggest-content error:", err);
+    res.status(500).json({ error: "Failed to generate suggestions." });
+  }
+});
+
+app.post("/api/generate-cover-letter", async (req, res) => {
+  const { resumeData, jobDescription, companyName, hiringManagerName, tone, section, existingContent } = req.body;
+
+  if (!jobDescription) return res.status(400).json({ error: "jobDescription is required" });
+
+  const pi = resumeData?.personalInfo || {};
+  const name = pi.fullName || "the candidate";
+  const skills = resumeData?.skills || {};
+  const allSkills = [
+    ...(skills.technical || []), ...(skills.soft || []), ...(skills.tools || []),
+  ].slice(0, 8);
+  const topExp = (resumeData?.experience || []).slice(0, 2).map(e =>
+    `${e.jobTitle || ""}${e.company ? ` at ${e.company}` : ""}${e.bullets?.[0] ? `: ${e.bullets[0]}` : ""}`
+  ).filter(Boolean).join("\n");
+
+  const signoffByTone = { Enthusiastic: "With enthusiasm", Creative: "Warmly", Confident: "Best regards", Professional: "Sincerely" };
+  const signoff = signoffByTone[tone] || "Sincerely";
+  const recipient = hiringManagerName || "Hiring Manager";
+  const company = companyName || "the company";
+
+  try {
+    let prompt;
+
+    if (section) {
+      // Regenerate a single section
+      const sectionDesc = {
+        greeting: `A salutation line. Example: "Dear ${recipient},"`,
+        opening: "A 2-3 sentence opening paragraph expressing enthusiasm for the role and briefly mentioning the strongest qualification.",
+        body: "A 3-5 sentence middle paragraph highlighting 2-3 specific achievements or experiences that match the job requirements.",
+        closing: "A 1-2 sentence closing paragraph with a clear call to action expressing interest in an interview.",
+        signoff: `Just the sign-off phrase (e.g. "${signoff}") — no name.`,
+      };
+      prompt = `Regenerate ONLY the "${section}" section of this cover letter. Keep tone: ${tone}.
+
+Candidate: ${name}
+Company: ${company}
+Role context: ${jobDescription.slice(0, 600)}
+${topExp ? `Experience:\n${topExp}` : ""}
+Existing letter for context: ${JSON.stringify(existingContent || {})}
+
+Section to write — ${section}: ${sectionDesc[section] || ""}
+
+Return ONLY valid JSON with one key: { "${section}": "..." }`;
+    } else {
+      // Generate full cover letter
+      prompt = `You are an expert cover letter writer. Write a compelling cover letter.
+
+CANDIDATE:
+Name: ${name}
+${pi.email ? `Email: ${pi.email}` : ""}
+${topExp ? `Experience:\n${topExp}` : ""}
+${allSkills.length ? `Skills: ${allSkills.join(", ")}` : ""}
+${resumeData?.summary ? `Summary: ${resumeData.summary.slice(0, 200)}` : ""}
+
+JOB DESCRIPTION:
+${jobDescription.slice(0, 1500)}
+
+COMPANY: ${company}
+HIRING MANAGER: ${recipient}
+TONE: ${tone}
+
+Write exactly these five sections:
+- greeting: "Dear ${recipient}," (literal salutation)
+- opening: 2-3 sentences — express enthusiasm + strongest qualification hook
+- body: 3-5 sentences — cite 2-3 specific achievements or experiences matching the job
+- closing: 1-2 sentences — call to action, request interview
+- signoff: "${signoff}" (just the phrase, no name)
+
+Return ONLY valid JSON, no markdown:
+{
+  "greeting": "Dear ${recipient},",
+  "opening": "...",
+  "body": "...",
+  "closing": "...",
+  "signoff": "${signoff}"
+}`;
+    }
+
+    const message = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1200,
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    const raw = message.content[0].text;
+    const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    res.json(JSON.parse(cleaned));
+  } catch (err) {
+    console.error("generate-cover-letter error:", err);
+    res.status(500).json({ error: "Failed to generate cover letter." });
+  }
+});
+
+app.post("/api/tailor-resume", async (req, res) => {
+  const { resumeData, jobDescription } = req.body;
+
+  if (!jobDescription) return res.status(400).json({ error: "jobDescription is required" });
+
+  try {
+    const name = resumeData?.personalInfo?.fullName || "the candidate";
+    const currentSummary = resumeData?.summary || "";
+    const skills = [
+      ...(resumeData?.skills?.technical || []),
+      ...(resumeData?.skills?.tools || []),
+      ...(resumeData?.skills?.soft || []),
+    ].join(", ");
+    const experience = (resumeData?.experience || []).map(e => ({
+      id: e.id,
+      jobTitle: e.jobTitle,
+      company: e.company,
+      description: (e.bullets || []).filter(Boolean).join("\n"),
+    }));
+    const prompt = `You are an expert ATS resume optimizer. Analyze this resume against the job description and suggest targeted improvements.
+
+CANDIDATE: ${name}
+CURRENT SUMMARY: ${currentSummary}
+SKILLS: ${skills}
+EXPERIENCE:
+${experience.map(e => `[ID: ${e.id}] ${e.jobTitle} at ${e.company}:\n${e.description}`).join("\n\n")}
+
+JOB DESCRIPTION:
+${jobDescription.slice(0, 3000)}
+
+Your task:
+1. Calculate an ATS keyword match score (0-100)
+2. Rewrite the summary to better target this specific job
+3. Improve up to 6 bullet points from experience descriptions with job-relevant keywords
+4. Suggest up to 8 skills to add that appear in the job description but are missing
+5. List up to 5 missing qualifications from the job that the resume doesn't address
+
+Return ONLY valid JSON with no markdown:
+{
+  "atsScore": 72,
+  "summary": {
+    "improved": "Rewritten summary targeting this specific role...",
+    "reason": "Brief reason for the change"
+  },
+  "bullets": [
+    {
+      "jobId": "exact-experience-id-from-above",
+      "original": "exact original bullet text",
+      "improved": "improved version with job keywords",
+      "reason": "why this was improved"
+    }
+  ],
+  "skillAdditions": ["skill1", "skill2"],
+  "missingQualifications": ["qualification 1", "qualification 2"]
+}`;
+
+    const message = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 2000,
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    const raw = message.content[0].text;
+    const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    res.json(JSON.parse(cleaned));
+  } catch (err) {
+    console.error("tailor-resume error:", err);
+    res.status(500).json({ error: "Failed to tailor resume. Please try again." });
+  }
+});
+
+app.post("/api/improve-content", async (req, res) => {
+  const { content, jobTitle, company } = req.body;
+
+  if (!content || content.trim().length < 10) {
+    return res.status(400).json({ error: "Content too short to improve." });
+  }
+
+  try {
+    const prompt = `You are an expert resume writer. Improve these resume bullet points for a ${jobTitle || "professional"} role${company ? ` at ${company}` : ""}.
+
+Original content:
+${content}
+
+Rewrite each bullet point to start with a strong action verb, include specific metrics, and focus on impact. Keep each bullet under 120 characters. Maintain the same number of bullet points.
+
+Return the improved bullet points one per line starting with •. Return ONLY the improved bullets, nothing else.`;
+
+    const message = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 800,
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    res.json({ improved: message.content[0].text.trim() });
+  } catch (err) {
+    console.error("improve-content error:", err);
+    res.status(500).json({ error: "Failed to improve content." });
   }
 });
 

@@ -1,0 +1,71 @@
+.ai-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.ai-loading-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: ai-spin 0.8s linear infinite;
+}
+
+@keyframes ai-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ai-loading-message {
+  font-size: 15px;
+  color: #374151;
+  font-weight: 500;
+  margin: 0;
+}
+
+.ai-loading-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 240px;
+}
+
+.ai-loading-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #9ca3af;
+  transition: color 0.3s;
+}
+
+.ai-loading-item.checked {
+  color: #111827;
+}
+
+.ai-loading-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 11px;
+  background: #f3f4f6;
+  color: #9ca3af;
+  flex-shrink: 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+.ai-loading-item.checked .ai-loading-check {
+  background: #10b981;
+  color: #fff;
+}
