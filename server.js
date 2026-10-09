@@ -150,7 +150,7 @@ app.post("/api/analyze", async (req, res) => {
   try {
     const message = await client.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 1500,
+      max_tokens: 8000,
       messages: [
         {
           role: "user",
@@ -195,7 +195,7 @@ app.post("/api/extract-resume-data", async (req, res) => {
   try {
     const message = await client.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 4000,
+      max_tokens: 8000,
       messages: [
         {
           role: "user",
@@ -350,7 +350,7 @@ Return ONLY valid JSON:
 
     const message = await client.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 1500,
+      max_tokens: 8000,
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -443,7 +443,7 @@ Return ONLY valid JSON, no markdown:
 
     const message = await client.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 1200,
+      max_tokens: 8000,
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -514,7 +514,7 @@ Return ONLY valid JSON with no markdown:
 
     const message = await client.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 2000,
+      max_tokens: 8000,
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -546,7 +546,7 @@ Return the improved bullet points one per line starting with •. Return ONLY th
 
     const message = await client.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 800,
+      max_tokens: 8000,
       messages: [{ role: "user", content: prompt }],
     });
 

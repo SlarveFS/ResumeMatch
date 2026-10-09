@@ -28,7 +28,7 @@ Return the improved bullet points in the same format (one per line, starting wit
 
     const message = await client.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 800,
+      max_tokens: 8000,
       messages: [{ role: "user", content: prompt }],
     });
 
