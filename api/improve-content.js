@@ -32,7 +32,7 @@ Return the improved bullet points in the same format (one per line, starting wit
       messages: [{ role: "user", content: prompt }],
     });
 
-    const improved = message.content[0].text.trim();
+    const improved = (message.content.find((b) => b.type === "text")?.text ?? "").trim();
     res.json({ improved });
   } catch (err) {
     console.error("improve-content error:", err);

@@ -175,7 +175,7 @@ Be specific and actionable. The suggested bullets should be realistic and based 
       ],
     });
 
-    const text = message.content[0].text;
+    const text = (message.content.find((b) => b.type === "text")?.text ?? "");
     const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
     const parsed = JSON.parse(cleaned);
 
@@ -274,7 +274,7 @@ ${text}`,
       ],
     });
 
-    const raw = message.content[0].text;
+    const raw = (message.content.find((b) => b.type === "text")?.text ?? "");
     const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
     const resumeData = JSON.parse(cleaned);
     res.json({ resumeData });
@@ -354,7 +354,7 @@ Return ONLY valid JSON:
       messages: [{ role: "user", content: prompt }],
     });
 
-    const raw = message.content[0].text;
+    const raw = (message.content.find((b) => b.type === "text")?.text ?? "");
     const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
     res.json(JSON.parse(cleaned));
   } catch (err) {
@@ -447,7 +447,7 @@ Return ONLY valid JSON, no markdown:
       messages: [{ role: "user", content: prompt }],
     });
 
-    const raw = message.content[0].text;
+    const raw = (message.content.find((b) => b.type === "text")?.text ?? "");
     const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
     res.json(JSON.parse(cleaned));
   } catch (err) {
@@ -518,7 +518,7 @@ Return ONLY valid JSON with no markdown:
       messages: [{ role: "user", content: prompt }],
     });
 
-    const raw = message.content[0].text;
+    const raw = (message.content.find((b) => b.type === "text")?.text ?? "");
     const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
     res.json(JSON.parse(cleaned));
   } catch (err) {
@@ -550,7 +550,7 @@ Return the improved bullet points one per line starting with •. Return ONLY th
       messages: [{ role: "user", content: prompt }],
     });
 
-    res.json({ improved: message.content[0].text.trim() });
+    res.json({ improved: (message.content.find((b) => b.type === "text")?.text ?? "").trim() });
   } catch (err) {
     console.error("improve-content error:", err);
     res.status(500).json({ error: "Failed to improve content." });

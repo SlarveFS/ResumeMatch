@@ -43,7 +43,7 @@ Be specific and actionable. The suggested bullets should be realistic and based 
       ],
     });
 
-    const text = message.content[0].text;
+    const text = (message.content.find((b) => b.type === "text")?.text ?? "");
     const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
     return res.status(200).json(JSON.parse(cleaned));
   } catch (err) {

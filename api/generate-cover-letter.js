@@ -86,7 +86,7 @@ Return ONLY valid JSON, no markdown:
       messages: [{ role: "user", content: prompt }],
     });
 
-    const raw = message.content[0].text;
+    const raw = (message.content.find((b) => b.type === "text")?.text ?? "");
     const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
     res.json(JSON.parse(cleaned));
   } catch (err) {

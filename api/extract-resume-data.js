@@ -79,7 +79,7 @@ ${text}`,
       ],
     });
 
-    const raw = message.content[0].text;
+    const raw = (message.content.find((b) => b.type === "text")?.text ?? "");
     const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
     const resumeData = JSON.parse(cleaned);
     res.json({ resumeData });
