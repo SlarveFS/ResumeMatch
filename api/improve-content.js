@@ -27,7 +27,7 @@ Rewrite each bullet point to:
 Return the improved bullet points in the same format (one per line, starting with •). Return ONLY the improved bullet points, nothing else.`;
 
     const message = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-5-5",
       max_tokens: 800,
       messages: [{ role: "user", content: prompt }],
     });
